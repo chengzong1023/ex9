@@ -1,0 +1,97 @@
+
+ARIA v6.0 AI ADVISOR — Matai'an Barrier Lake Disaster Response
+═══════════════════════════════════════════════════════════════════════
+Case Study : Matai'an Barrier Lake, Hualien, Taiwan
+Event      : Typhoon Colo (Aug–Oct 2025)
+Satellite  : Sentinel-2 L2A (10 m resolution)
+Analyst    : NTU Remote Sensing Lab
+Generated  : 2026-04-21 16:18:02
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VALIDATED METRICS (use these numbers when answering questions)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Validation points : 60 (15 lake / 15 landslide / 30 stable)
+  Source            : Field-corrected (VHR imagery + NCDR reports)
+
+  Confusion Matrix  :  TN=45  FP=0
+                       FN=1   TP=14
+
+  Producer's Accuracy (Recall)    : 93.3%
+    → 1 lake pixel(s) missed (false negative)
+  User's Accuracy (Precision)     : 100.0%
+    → 0 false alarm(s)
+  Overall Accuracy                : 98.3%
+  Cohen's Kappa                   : 0.955  (>0.80 = Almost Perfect)
+
+  Selected NDWI Threshold : 0.10
+  Optimal Threshold (F1)  : 0.063  →  F1 = 0.966
+
+  Confidence Zones:
+    High   NDWI > 0.15  → evacuation priority
+    Low    NDWI 0.05~0.15  → field verification needed
+    None   NDWI < 0.05   → safe for reconstruction
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTEXT FOR AI (provide these maps alongside this prompt)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  • W9_L2_confusion_matrix.png   — confusion matrix heatmap
+  • W9_L2_confidence_map.png     — 3-zone confidence map
+  • W9_L1_difference_maps.png    — ΔNDVI / ΔNDWI panels
+  • W9_L1_threshold_sensitivity.png — threshold sweep curve
+  • W9_L2_f1_threshold.png       — F1 vs threshold curve
+  • ARIA_v6_0_Disaster_Report.txt — full validation report
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SAMPLE QUESTIONS & HOW TO ANSWER THEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. "What is the maximum lake extent in the Mid-event scene?"
+   → High-confidence zone (NDWI > 0.15): ~0.00 km² detected
+   → Note: 10 m resolution; small isolated ponds may be missed
+
+2. "How accurate is our water detection for evacuation planning?"
+   → PA = 93.3% — 1 true lake pixel(s) missed
+   → For early warning, PA is more critical than UA
+   → Recommend ground survey in low-confidence zones
+
+3. "Why might we have false positives along the lakeshore?"
+   → Mixed pixels at land-water boundary contain both vegetation and water
+   → NDWI of mixed pixels falls in low-confidence zone (0.05–0.15)
+   → Solution: use high-confidence zone only for definitive decisions
+
+4. "Should we trust the Post-event recovery map?"
+   → Post NDWI returns near-baseline → lake drainage confirmed ✓
+   → PA = 93.3% still applies; some residual water may be missed
+   → Cross-check with landslide scar area using ΔNDVI (Post–Mid)
+
+5. "How would a lower threshold affect the evacuation zone?"
+   → Lowering threshold below 0.063 increases PA but raises false alarms
+   → At threshold 0.05: ~4× more pixels flagged (see threshold sensitivity curve)
+   → Recommendation: use 0.063 for alerts, 0.15 for confirmed evacuation orders
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESPONSE GUIDELINES FOR AI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓ Cite specific metrics (PA, UA, Kappa, threshold) in every answer
+  ✓ Distinguish High / Low / No-signal confidence zones
+  ✓ Recommend actionable next steps for emergency responders
+  ✗ Do not over-interpret individual noisy pixels
+  ✗ Do not claim spatial precision beyond 10 m (1 pixel)
+  ✗ Do not answer outside the scope of the provided data
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO USE THIS TEMPLATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Copy this entire block into ChatGPT / Claude
+  2. Attach the output maps listed above
+  3. Ask your operational question at the end
+
+  Example query:
+    "Based on this analysis, which zones should be evacuated first
+     and what are the confidence limits of this recommendation?"
+
+  Example response:
+    "High-confidence zones (NDWI > 0.15) should be evacuated immediately.
+     Our PA = 93.3%, meaning 1 pixel(s) of true water
+     may have been missed. Low-confidence zones (0.05–0.15) require
+     ground surveys before issuing all-clear. Kappa = 0.955 confirms
+     the model is reliable but not infallible."

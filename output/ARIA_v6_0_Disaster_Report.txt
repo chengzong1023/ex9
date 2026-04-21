@@ -1,0 +1,100 @@
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                     ARIA v6.0 VALIDATED DISASTER REPORT                       ║
+║              Remote Sensing Analysis & Validation Authority (ARIA)            ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+CASE STUDY : Matai'an Barrier Lake, Hualien, Taiwan
+EVENT      : Typhoon Colo (Aug–Oct 2025)
+INSTITUTION: National Taiwan University (NTU)
+ANALYST    : NTU Remote Sensing Lab
+REPORT DATE: 2026-04-21 16:19:29
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STUDY AREA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Bounding Box : [121.28, 23.56, 121.52, 23.76]  (~360 km²)
+  Lake AOI     : [121.27, 23.68, 121.32, 23.72]  (~20 km²)
+  Projection   : WGS84 / UTM Zone 51N (EPSG:32651)
+  Resolution   : 10 m (Sentinel-2 L2A)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEMPORAL ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Pre-event  : 2025-06-15  Cloud cover:  1.4%  (baseline, dense forest)
+  Mid-event  : 2025-09-11  Cloud cover: 21.8%  (barrier lake at peak)
+  Post-event : 2025-10-16  Cloud cover:  8.9%  (lake drained, sediment deposit)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SPECTRAL INDICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NDVI = (NIR - Red)   / (NIR + Red)
+    → Vegetation change  | ΔNDVI peak (Mid-Pre): -0.0267
+    → Negative = vegetation loss at lake site
+
+  NDWI = (Green - NIR) / (Green + NIR)
+    → Water detection    | ΔNDWI peak (Mid-Pre): +0.0191
+    → Positive = water increase (barrier lake formed)
+
+  Conclusion: NDWI shows stronger signal for barrier lake detection.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VALIDATION RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Total Validation Points : 60
+    Water (lake)          : 15 points
+    No-Water (stable)     : 45 points
+  Source: Field-corrected (VHR imagery + NCDR reports)
+
+  Confusion Matrix (NDWI threshold = 0.10):
+  ┌─────────────────┬──────────────┬──────────────┐
+  │                 │ Pred No-Water│ Pred Water   │
+  ├─────────────────┼──────────────┼──────────────┤
+  │ True No-Water   │  TN =  45    │  FP =   0    │
+  │ True Water      │  FN =   1    │  TP =  14    │
+  └─────────────────┴──────────────┴──────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACCURACY METRICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Producer's Accuracy (Recall)  : 0.933  (93.3%)
+    → 1 lake pixel(s) missed — critical for evacuation
+  User's Accuracy (Precision)   : 1.000  (100.0%)
+    → 0 false alarm(s) — no wasted resources
+  Overall Accuracy              : 0.983  (98.3%)
+  Cohen's Kappa                 : 0.955
+    → Interpretation: Almost Perfect Agreement (> 0.80)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DETECTION THRESHOLD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Selected threshold : 0.100  (balance between sensitivity & precision)
+  Optimal  threshold : 0.063  (maximises F1 = 0.966)
+  Recommendation     : Use 0.063 for early warning; 0.15 for confirmed orders
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIDENCE ZONES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  High   (NDWI > 0.15)   : 0.88 km²  → EVACUATE IMMEDIATELY
+  Low    (NDWI 0.05–0.15) : field verification required
+  None   (NDWI < 0.05)   : safe for reconstruction activities
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LIMITATIONS & CAVEATS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  • Mid-event cloud cover 21.8% — SCL masking applied to remove artifacts
+  • 10 m resolution may miss small isolated ponds (< 1 pixel = 0.01 ha)
+  • Shoreline mixed pixels introduce uncertainty in low-confidence zone
+  • Validation sample (n=60) sufficient for lab; operational use needs n≥100
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARIA v6.0 ASSESSMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Auditor  (Confusion Matrix)  : ✓ Computed
+  Rater    (Accuracy Metrics)  : ✓ Kappa = 0.955 — Almost Perfect
+  Indicator(Confidence Zones)  : ✓ Mapped (0.88 km² high-confidence)
+  Advisor  (Recommendations)   : ✓ Threshold & evacuation zones defined
+
+  Report Status : FINAL
+  Quality Level : Operational — Ready for Emergency Response
+╚════════════════════════════════════════════════════════════════════════════════╝
